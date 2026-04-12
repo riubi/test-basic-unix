@@ -1,0 +1,53 @@
+     1	dnf -y --exclude=openh264* update
+     2	dnf -y --exclude=openh264* install --setopt=install_weak_deps=False dnf-plugins-core nginx tcpdump libcap-ng-utils policycoreutils policycoreutils-python-utils selinux-policy-targeted openssh-server openssh-clients NetworkManager iproute iputils parted e2fsprogs util-linux sudo curl wget passwd systemd systemd-pam authselect vim-minimal
+     3	dnf clean all
+     4	hostnamectl set-hostname mephi-2026.domain.local
+     5	ip addr add 192.168.1.100/24 dev eth0
+     6	ping -c 4 8.8.8.8 > /tmp/network_check.txt
+     7	ping -c 4 192.168.1.1 >> /tmp/network_check.txt
+     8	mkdir -p /tmp
+     9	dnf download tcpdump && rpm -ivh tcpdump*.rpm
+    10	rpm -ivh --replacepkgs /tmp/tcpdump-4.99.6-2.fc43.aarch64.rpm
+    11	truncate -s 120M /tmp/mephi_sdb.img
+    12	parted -s /tmp/mephi_sdb.img mklabel gpt mkpart primary ext4 1MiB 100%
+    13	wipefs -a -f /tmp/mephi_sdb.img
+    14	mkfs.ext4 -F -L MEPHI_DATA /tmp/mephi_sdb.img
+    15	mount -o loop /tmp/mephi_sdb.img /data/mephi-web
+    16	groupadd -f mephi-devs
+    17	useradd -m mephi-admin
+    18	bash -c echo 'mephi-admin:P@ssw0rd2026' | chpasswd
+    19	usermod -aG mephi-devs mephi-admin
+    20	chown mephi-admin:mephi-devs /data/mephi-web
+    21	chmod 2775 /data/mephi-web
+    22	semanage fcontext ... httpd_sys_content_t /data/mephi-web
+    23	restorecon -Rv /data/mephi-web
+    24	mkdir -p /etc/nginx/conf.d
+    25	chown mephi-admin:mephi-devs /data/mephi-web/index.html
+    26	nginx -t
+    27	nginx
+    28	chmod u-s /usr/sbin/tcpdump
+    29	setcap cap_net_raw,cap_net_admin+ep /usr/sbin/tcpdump
+    30	runuser -u mephi-admin -- /usr/sbin/tcpdump --help
+    31	pam_listfile для root в /etc/pam.d/sshd и /etc/pam.d/login
+    32	curl http://localhost
+    33	curl http://192.168.1.100
+    34	cp /tmp/nginx_recent_logs.txt /root/nginx_recent_logs.txt
+    35	cp /etc/fstab /root/fstab.txt
+    36	ls -Zd /data/mephi-web
+    37	getcap /usr/sbin/tcpdump
+    38	stat /data/mephi-web
+    39	id mephi-admin
+    40	getent group mephi-devs
+    41	cp /tmp/curl_ip.txt /root/curl_output.txt
+    42	journalctl -u nginx --since "5 minutes ago" > ~/nginx_recent_logs.txt
+    43	cp /etc/fstab ~/fstab.txt
+    44	getenforce > ~/selinux_status.txt
+    45	ls -Zd /data/mephi-web > ~/file_contexts.txt
+    46	getcap /usr/sbin/tcpdump > ~/tcpdump_capabilities.txt
+    47	stat /data/mephi-web > ~/permissions.txt
+    48	id mephi-admin > ~/users_groups.txt
+    49	getent group mephi-devs >> ~/users_groups.txt
+    50	curl -s http://192.168.1.100 > ~/curl_output.txt
+    51	ping -c 4 192.168.1.1 > ~/network_check.txt
+    52	ping -c 4 8.8.8.8 >> ~/network_check.txt
+    53	history > ~/project_history.txt

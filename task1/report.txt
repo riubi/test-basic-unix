@@ -1,0 +1,85 @@
+    1  groupadd -g 5500 team
+    2  groupadd -g 4444 curators
+    3  useradd -m -u 5501 -g team user1
+    4  useradd -m -u 5502 -g team user2
+    5  useradd -m -u 5503 -g team user3
+    6  useradd -m -G curators curator1
+    7  useradd -m -G curators curator2
+    8  mkdir /dir-M2551076
+    9  chown root:team /dir-M2551076
+   10  chmod 2770 /dir-M2551076
+   11  setfacl -m g:curators:rx,o::--- /dir-M2551076
+   12  setfacl -d -m g::rwx,g:curators:r-x,o::--- /dir-M2551076
+
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin
+_apt:x:42:65534::/nonexistent:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+user1:x:5501:5500::/home/user1:/bin/sh
+user2:x:5502:5500::/home/user2:/bin/sh
+user3:x:5503:5500::/home/user3:/bin/sh
+curator1:x:5504:5504::/home/curator1:/bin/sh
+curator2:x:5505:5505::/home/curator2:/bin/sh
+
+root:x:0:
+daemon:x:1:
+bin:x:2:
+sys:x:3:
+adm:x:4:
+tty:x:5:
+disk:x:6:
+lp:x:7:
+mail:x:8:
+news:x:9:
+uucp:x:10:
+man:x:12:
+proxy:x:13:
+kmem:x:15:
+dialout:x:20:
+fax:x:21:
+voice:x:22:
+cdrom:x:24:
+floppy:x:25:
+tape:x:26:
+sudo:x:27:
+audio:x:29:
+dip:x:30:
+www-data:x:33:
+backup:x:34:
+operator:x:37:
+list:x:38:
+irc:x:39:
+src:x:40:
+shadow:x:42:
+utmp:x:43:
+video:x:44:
+sasl:x:45:
+plugdev:x:46:
+staff:x:50:
+games:x:60:
+users:x:100:
+nogroup:x:65534:
+team:x:5500:
+curators:x:4444:curator1,curator2
+curator1:x:5504:
+curator2:x:5505:
+
+проверка:
+curator1 read ok
+curator write blocked ok
+curator sub read ok
+other blocked ok

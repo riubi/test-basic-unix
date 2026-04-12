@@ -1,0 +1,2 @@
+# fstab intentionally empty for containers
+LABEL=MEPHI_DATA /data/mephi-web ext4 defaults 0 2
